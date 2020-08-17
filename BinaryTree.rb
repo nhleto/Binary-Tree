@@ -12,6 +12,7 @@ end
 
 # binary search tree initialization
 class Tree
+  attr_accessor :root
   def initialize(array)
     @sorted_array = array.sort.uniq unless array.nil?
     @root = build_tree(@sorted_array)
@@ -80,12 +81,6 @@ class Tree
     root
   end
 
-  def find(value, root = @root)
-    return root if root.nil? || root.data == value
-
-    root.data < value ? find(value, root.right) : find(value, root.left)
-  end
-
   def level_order(root = @root)
     return if root.nil?
 
@@ -103,6 +98,7 @@ class Tree
       output << current.data
     end
     puts "Breadth traversal output: #{output}"
+    output
   end
 
   def postorder(root = @root)
@@ -130,13 +126,41 @@ class Tree
     preorder(root.right)
   end
 
-  def height(root = @root)
-    
+  def find(value, root = @root)
+    return root if root.nil? || root.data == value
+
+    root.data < value ? find(value, root.right) : find(value, root.left)
   end
 
-  def display
-    build_tree(@sorted_array)
-    pretty_print
+  def height(root = @root)
+    return -1 if root.nil?
+
+    left = height(root.left)
+    right = height(root.right)
+    left > right ? left + 1 : right + 1
+  end
+
+  def depth(node = @root)
+    if node
+      left_height = depth(node.left)
+      right_height = depth(node.right)
+      left_height > right_height ? left_height + 1 : right_height + 1
+    else
+      -1
+    end
+  end
+
+  def balanced?(root = @root)
+    left = depth(root.left)
+    p left
+    right = depth(root.right)
+    p right
+    left - right > -2 && left - right < 2
+  end
+
+  def rebalance
+    lo_array = level_order(self.root)
+    self.root = build_tree(lo_array)
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
@@ -145,8 +169,14 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? ' ' : '│ '}", true) if node.left
   end
 end
-full_list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
+full_list = Array.new(15) { rand(1..100) }
+
 bst = Tree.new(full_list)
-bst.postorder
+bst.inserting(500)
+bst.inserting(501)
+bst.inserting(502)
+p bst.balanced?
+bst.rebalance
+p bst.balanced?
 puts "\n"
-bst.display
+bst.pretty_print
