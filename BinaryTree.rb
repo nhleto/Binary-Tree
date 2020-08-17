@@ -86,6 +86,25 @@ class Tree
     root.data < value ? find(value, root.right) : find(value, root.left)
   end
 
+  def level_order(root = @root)
+    return if root.nil?
+
+    queue = []
+    output = []
+    queue << root
+    until queue.empty?
+      current = queue.shift
+      if current.left
+        queue << current.left
+      end
+      if current.right
+        queue << current.right
+      end
+      output << current.data
+    end
+    puts "Breadth traversal output: #{output}"
+  end
+
   def display
     build_tree(@sorted_array)
     pretty_print
@@ -97,7 +116,7 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? ' ' : '│ '}", true) if node.left
   end
 end
-full_list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
+full_list = [5,6,2,4,1,8,7,9,3]
 bst = Tree.new(full_list)
-p bst.find(8)
-bst.display
+bst.level_order
+# bst.display
