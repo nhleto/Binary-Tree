@@ -1,15 +1,5 @@
 # frozen_string_literal: true
 
-# define node structure / data storage
-class Node
-  attr_accessor :data, :left, :right
-  def initialize(data)
-    @data = data
-    @left = nil
-    @right = nil
-  end
-end
-
 # binary search tree initialization
 class Tree
   attr_accessor :root
@@ -97,7 +87,6 @@ class Tree
       end
       output << current.data
     end
-    puts "Breadth traversal output: #{output}"
     output
   end
 
@@ -152,9 +141,10 @@ class Tree
 
   def balanced?(root = @root)
     left = depth(root.left)
-    p left
+    puts "Height of left branch is #{left}"
     right = depth(root.right)
-    p right
+    puts "Height of right branch is #{right}"
+    print "\nIs balanced? "
     left - right > -2 && left - right < 2
   end
 
@@ -169,14 +159,3 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? ' ' : '│ '}", true) if node.left
   end
 end
-full_list = Array.new(15) { rand(1..100) }
-
-bst = Tree.new(full_list)
-bst.inserting(500)
-bst.inserting(501)
-bst.inserting(502)
-p bst.balanced?
-bst.rebalance
-p bst.balanced?
-puts "\n"
-bst.pretty_print
