@@ -30,7 +30,7 @@ class Tree
     node
   end
 
-  def inserting(value, root  = @root)
+  def inserting(value, root = @root)
     node = Node.new(value)
     if root.nil?
       root = node
@@ -39,13 +39,13 @@ class Tree
         if root.right.nil?
           root.right = node
         else
-          inserting(value, root)
+          inserting(value, root.right)
         end
       else
         if root.left.nil?
           root.left = node
         else
-          root.left = node
+          inserting(value, root.left)
         end
       end
     end
@@ -63,7 +63,7 @@ class Tree
   end
 end
 
-full_list = [0, 30, 32, 34, 36, 40, 50, 60, 65, 70, 75, 80, 85]
+full_list = [4, 3, 2, 1]
 bst = Tree.new(full_list)
-bst.inserting(51)
+bst.inserting(49)
 bst.display
