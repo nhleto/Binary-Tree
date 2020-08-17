@@ -51,6 +51,41 @@ class Tree
     end
   end
 
+  def min_value_node(root)
+    return if root.nil?
+
+    return min_value_node(root.right) unless root.right.nil?
+
+    root
+  end
+
+  def deleting(value, root = @root)
+    return if root.nil?
+
+    if value < root.data
+      root.left = deleting(value, root.left)
+    elsif value > root.data
+      root.right = deleting(value, root.right)
+    elsif root.left.nil? && root.right.nil?
+      root = nil
+    elsif root.left.nil?
+      root = root.right
+    elsif root.right.nil?
+      root = root.left
+    else
+      temp = min_value_node(root.left)
+      root.data = temp.data
+      root.left = deleting(temp.data, root.left)
+    end
+    root
+  end
+
+  def find(value, root = @root)
+    return root if root.nil? || root.data == value
+
+    root.data < value ? find(value, root.right) : find(value, root.left)
+  end
+
   def display
     build_tree(@sorted_array)
     pretty_print
@@ -62,8 +97,7 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? ' ' : '│ '}", true) if node.left
   end
 end
-
-full_list = [4, 3, 2, 1]
+full_list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 bst = Tree.new(full_list)
-bst.inserting(49)
+p bst.find(8)
 bst.display
