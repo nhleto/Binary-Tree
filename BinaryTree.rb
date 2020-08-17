@@ -105,6 +105,35 @@ class Tree
     puts "Breadth traversal output: #{output}"
   end
 
+  def postorder(root = @root)
+    return if root.nil?
+
+    postorder(root.left)
+    postorder(root.right)
+    p root.data
+  end
+
+  def inorder(root = @root)
+    return if root.nil?
+
+    inorder(root.left)
+    p root.data
+    inorder(root.right)
+  end
+
+  def preorder(root = @root)
+    return if root.nil?
+
+    # p root.data
+    p root.data
+    preorder(root.left)
+    preorder(root.right)
+  end
+
+  def height(root = @root)
+    
+  end
+
   def display
     build_tree(@sorted_array)
     pretty_print
@@ -116,7 +145,8 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? ' ' : '│ '}", true) if node.left
   end
 end
-full_list = [5,6,2,4,1,8,7,9,3]
+full_list = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 bst = Tree.new(full_list)
-bst.level_order
-# bst.display
+bst.postorder
+puts "\n"
+bst.display
